@@ -1,0 +1,38 @@
+app:
+  jwtExpirationMs: 86400000
+  jwtRefreshExpirationMs: 604800000
+  jwtSecret: 'U2FsdGVkX1/kte8JaLu6UFRqfWsVKZvGxF5CApjphfq/3kjCn2TTqF+woNk89VuX9CNwE8xh/F4W7bBU+bS0QQ== '
+azure:
+  storage:
+    account-key: JlsWQe84ylbZW/Jfli78YWQit5tXhl/acQ2K3t4wqdpB3U2bmAO5jYcpSt/w4Bx8Inakuvlqb8E3+AStkc/URw==
+    account-name: imgfile
+    blob-enpoint: https://imgfile.blob.core.windows.net
+    connection-string: DefaultEndpointsProtocol=https;AccountName=imgfile;AccountKey=JlsWQe84ylbZW/Jfli78YWQit5tXhl/acQ2K3t4wqdpB3U2bmAO5jYcpSt/w4Bx8Inakuvlqb8E3+AStkc/URw==;EndpointSuffix=core.windows.net
+    container: test
+server:
+  port: 8080
+  servlet:
+    context-path: /stationery-store/api
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 1234
+    url: jdbc:mysql://localhost:3306/stationerystore
+    username: root
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+   
+  mail:
+    host: smtp.gmail.com
+    password: zatdwgsjaamjpkke
+    port: 587
+    properties:
+      mail:
+        smtp:
+          outh: true
+          starttls:
+            enable: true
+    username: vanthanhtoan731@gmail.com
