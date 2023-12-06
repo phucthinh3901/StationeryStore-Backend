@@ -25,6 +25,7 @@ public class BrandsServiceImpl implements BrandsService {
 	@Override
 	public List<BrandsDto> createOrUpdate(BrandRequest request) {
 		Brands brand = null;
+		
 		List<BrandsDto> result = new ArrayList<BrandsDto>();
 		if (request.getId() == null) {
 			brand = new Brands();
@@ -45,7 +46,7 @@ public class BrandsServiceImpl implements BrandsService {
 	public List<BrandsDto> getBrands() {
 		
 		Pageable pageable = PageRequest.of(0, 10, Sort.by("brandName"));
-		Page<Brands> brands = brandsRepository.findAll(pageable);
+		Page<Brands> brands = brandsRepository.findBrandsByIsAcitve(pageable);
 		
 //		List<Brands> brands = brandsRepository.findAll();
 		
@@ -61,7 +62,6 @@ public class BrandsServiceImpl implements BrandsService {
 		}
 		return result;
 	}
-
 	@Override
 	public Boolean removeBrand(Integer id) {
 

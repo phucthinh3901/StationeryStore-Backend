@@ -5,9 +5,10 @@ import java.io.Serializable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
+@Data
 public class CartId implements Serializable{
-
 	
 	private static final long serialVersionUID = 1L;
 	

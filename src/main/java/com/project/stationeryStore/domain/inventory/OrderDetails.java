@@ -1,5 +1,6 @@
 package com.project.stationeryStore.domain.inventory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.stationeryStore.framework.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -25,8 +26,13 @@ public class OrderDetails extends BaseEntity{
 	@Column(name = "discount")
 	private Integer discount;
 	
+	@Column(name = "product_Id")
+	private Integer product;
+	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private Orders orders;
+	
 	
 }

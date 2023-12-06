@@ -1,5 +1,6 @@
 package com.project.stationeryStore.domain.inventory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.stationeryStore.framework.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -22,6 +23,7 @@ public class Images extends BaseEntity{
 	@Column(name = "image_url")
 	private String imageUrl;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Products products;

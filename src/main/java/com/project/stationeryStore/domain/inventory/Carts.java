@@ -26,4 +26,5 @@ public class Carts {
 	@EmbeddedId
 	private CartId id;
 	
+	
 }

@@ -3,6 +3,7 @@ package com.project.stationeryStore.domain.inventory;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.stationeryStore.framework.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -27,7 +28,7 @@ public class Orders extends BaseEntity{
 	private Integer updatedBy;
 	
 	@Column(name = "address")
-	private Integer address;
+	private String address;
 	
 	@Column(name = "total_bill")
 	private Float totalBill;
@@ -42,7 +43,7 @@ public class Orders extends BaseEntity{
 	private Date updatedDate;
 	
 	@Column(name = "discount_VIP")
-	private Date discountVIP;
+	private Integer discountVIP;
 	
 	@Column(name = "description")
 	private String description;
@@ -53,10 +54,16 @@ public class Orders extends BaseEntity{
 	@Column(name = "is_active")
 	private Boolean isActive;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "orders")
 	private List<OrderDetails> orderDetails;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private Users user;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "feedbackId.orders")
+	private List<Feedbacks> feedbacks;
 }

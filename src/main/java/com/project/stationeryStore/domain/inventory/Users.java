@@ -2,6 +2,7 @@ package com.project.stationeryStore.domain.inventory;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.stationeryStore.framework.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -44,14 +45,25 @@ public class Users extends BaseEntity{
 	@Column(name = "password_salt")
 	private String passwordSalt;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Orders> orders;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "id.users")
+	private List<Carts> cartId;
+	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "vip_id")
 	private VIPs vip;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Roles role;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "feedbackId.users")
+	private List<Feedbacks> feedbacks;
 }
