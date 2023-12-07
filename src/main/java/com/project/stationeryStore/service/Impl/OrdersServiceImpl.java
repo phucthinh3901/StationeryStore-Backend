@@ -139,6 +139,7 @@ public class OrdersServiceImpl implements OrdersService{
 
 		List<OrderDto> dto = new ArrayList<OrderDto>();
 		Orders order = orderRepository.findOrderByOrderIdAndUserId(request.getOrderId(),request.getUserId());
+		
 		if(order.getStatus() == EOrderStatus.CHOXACNHAN.toString()) {
 			order.setStatus(EOrderStatus.DANGXULY.toString());
 			order.setUpdatedDate(new Date());
@@ -154,6 +155,7 @@ public class OrdersServiceImpl implements OrdersService{
 		orderRepository.save(order);
 		dto = getOrderByUserId(request.getUserId());
 		return dto;
+		
 	}
 	@Override
 	public List<Orders> getListOrder() {

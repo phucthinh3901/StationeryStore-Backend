@@ -31,7 +31,7 @@ public class FeedbackController {
 		final List<FeedbackDto> result = feedbackService.createOrUpdateFeedback(request);
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(true, result, Constants.CREATE_SUCCESS_MSG));
 	}
-	@GetMapping("/{productId}")
+	@GetMapping("/paginationFeedback/{productId}")
 	private ResponseEntity<ApiResponse> paginationFeedback(@PathVariable Integer productId){
 		final List<FeedbackDto> result = feedbackService.getFeedbackProduct(productId);
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(true,result,Constants.GET_SUCESS_MSG));

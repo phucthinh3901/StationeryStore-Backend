@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.stationeryStore.domain.dto.FeedbackDto;
-import com.project.stationeryStore.domain.inventory.Brands;
 import com.project.stationeryStore.domain.inventory.FeedbackId;
 import com.project.stationeryStore.domain.inventory.Feedbacks;
 import com.project.stationeryStore.domain.inventory.Orders;
@@ -74,10 +73,10 @@ public class FeedbackServiceImpl implements FeedbackService{
 		feedback.setComments(request.getComment());
 	
 		feedbackRepository.save(feedback);
+		
 		listFeedback = getFeedbackProduct(request.getProductId());
 		return listFeedback;
 	}
-
 
 	@Override
 	public Boolean removeFeedback(RemoveFeedbackRequest request) {
@@ -90,10 +89,9 @@ public class FeedbackServiceImpl implements FeedbackService{
 		return result;
 	}
 
-
 	@Override
 	public List<FeedbackDto> getFeedbackProduct(Integer productId) {
-		Pageable pageable = PageRequest.of(0, 10, Sort.by(""));
+		Pageable pageable = PageRequest.of(0, 10, Sort.by("createdDate"));
 		Page<Feedbacks> listFeedback = feedbackRepository.findFeedbackByProductId(productId, pageable);
 		FeedbackDto dto = null;
 		List<FeedbackDto> listFeedbackDto = new ArrayList<FeedbackDto>();

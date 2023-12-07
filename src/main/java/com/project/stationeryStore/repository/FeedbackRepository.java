@@ -13,7 +13,7 @@ public interface FeedbackRepository extends JpaRepository<Feedbacks, Integer>{
 	@Query("From Feedbacks fb where fb.feedbackId.users.id = :userId And fb.feedbackId.orders.id = :orderId And fb.feedbackId.products.id = :productId")
 	Feedbacks findFeedbackByOrderIdAndUserIdAndProductId(@Param("userId") Integer userId, @Param("orderId") Integer orderId, @Param("productId") Integer productId);
 
-	@Query("From Feedbacks fb where fb.feedbackId.products.id = :id")
+	@Query("From Feedbacks fb where fb.feedbackId.products.id = :productId")
 	Page<Feedbacks> findFeedbackByProductId(@Param("productId") Integer id, Pageable pageable);
 
 }
