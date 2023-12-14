@@ -73,7 +73,6 @@ public class UserServicesImpl implements UserServices{
 		String roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList()).get(0);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		
 		RefreshToken refreshToken = refreshTokenService.getByUserId(userDetails.getId());
 		if (refreshToken != null ) {
 			refreshTokenService.deleteByUserId(userDetails.getId());
@@ -84,6 +83,7 @@ public class UserServicesImpl implements UserServices{
 		jwtResponse.setEmail(userDetails.getEmail());
 		jwtResponse.setUsername(userDetails.getUsername());
 		jwtResponse.setRefreshToken(refreshToken.getToken());
+		
 		jwtResponse.setToken(jwt);
 		jwtResponse.setRoles(roles);
 		return jwtResponse;
@@ -97,7 +97,7 @@ public class UserServicesImpl implements UserServices{
 		if (refreshToken != null) {
 			refreshToken = refreshTokenService.verifyExpiration(refreshToken);
 			Users user = refreshToken.getUser();
-			String token = jwtUtils.generateTokenFromUsername(user.getLoginName());
+			String token = jwtUtils.generateTokenFromUsername(user.getUsername());
 			refreshResponse.setAccessToken(token);
 			refreshResponse.setRefreshToken(refreshToken.getToken());
 		}
@@ -110,11 +110,11 @@ public class UserServicesImpl implements UserServices{
 		ApiResponse response = new ApiResponse();
 		user.setEmail(signUpRequest.getEmail());
 		user.setAddress(signUpRequest.getAddress());
-		user.setName(signUpRequest.getFirstName() + " " + signUpRequest.getLastName() );
+		user.setName(signUpRequest.getFirstName() + " " + signUpRequest.getLastName());
 		user.setTelNum(signUpRequest.getPhone());
 		user.setName(signUpRequest.getFirstName());
 		user.setIsActive(Boolean.TRUE);
-		user.setLoginName(signUpRequest.getUserName());
+		user.setUsername(signUpRequest.getUserName());
 		user.setPasswordSalt(encoder.encode(signUpRequest.getPassword()));
 		String strRoles = signUpRequest.getRoles();
 		Roles role = null;

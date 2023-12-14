@@ -8,4 +8,6 @@ public class ProductOrderDto {
 	private Integer productId;
 	
 	private Integer quantity;
+	
+	private String nameProduct;
 }

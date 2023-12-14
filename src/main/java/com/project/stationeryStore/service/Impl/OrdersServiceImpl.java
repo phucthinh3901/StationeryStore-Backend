@@ -15,6 +15,8 @@ import com.project.stationeryStore.domain.inventory.OrderDetails;
 import com.project.stationeryStore.domain.inventory.Orders;
 import com.project.stationeryStore.domain.inventory.Products;
 import com.project.stationeryStore.domain.inventory.Users;
+import com.project.stationeryStore.domain.payload.request.EmailPaymentNotificationRequest;
+import com.project.stationeryStore.domain.payload.request.EmailUpdateStatusRequest;
 import com.project.stationeryStore.domain.payload.request.OrderByOptionRequest;
 import com.project.stationeryStore.domain.payload.request.StatusOrderRequest;
 import com.project.stationeryStore.repository.CartRepository;
@@ -22,6 +24,7 @@ import com.project.stationeryStore.repository.OrderDetailsRepository;
 import com.project.stationeryStore.repository.OrderRepository;
 import com.project.stationeryStore.repository.ProductRepository;
 import com.project.stationeryStore.repository.UserRepository;
+import com.project.stationeryStore.service.EmailService;
 import com.project.stationeryStore.service.OrdersService;
 
 
@@ -43,13 +46,16 @@ public class OrdersServiceImpl implements OrdersService{
 	@Autowired
 	ProductRepository productRepository;
 	
+	@Autowired
+	EmailService emailService;
+	
 	@Override
 	public List<OrderDto> createrOrderInCart(OrderByOptionRequest request) {
 		
 		Float totalBill = 0f;
-		
 		List<OrderDetails> orderDetailList = new ArrayList<OrderDetails>();
 		List<OrderDto> result = new ArrayList<OrderDto>();
+		EmailPaymentNotificationRequest email = new EmailPaymentNotificationRequest();
 		
 		Users user = userRepository.findUserByIdAndIsActive(request.getUserId());
 		
@@ -79,14 +85,28 @@ public class OrdersServiceImpl implements OrdersService{
 			orderDetail.setQuanity(product.getQuanity());
 			orderDetail.setProduct(product.getId());
 			orderDetailList.add(orderDetail);
-			
 			product.setQuanity(product.getQuanity() - dto.getQuantity());
+			
 		}
 		
+		email.setAmount(totalBill);
+		email.setContent(order.getDescription());
+		email.setCreateAt(order.getCreatedDate());
+		email.setToEmail(user.getEmail());
+		email.setUserName(user.getUsername());
+		
+		email.setProductOrderDtos(request.getListProduct());
+		
 		order.setTotalBill(totalBill);
+		
 		orderRepository.save(order);
+		
 		orderDetailsRepository.saveAll(orderDetailList);
+		
+		emailService.sendMailUPpgradeRank(email);
+		
 		productRepository.save(product);
+		
 		cartRepository.deleteAll(user.getCartId());
 		
 		result = getOrderByUserId(user.getId());
@@ -138,21 +158,22 @@ public class OrdersServiceImpl implements OrdersService{
 	public List<OrderDto> updateOrderStatus(StatusOrderRequest request) {
 
 		List<OrderDto> dto = new ArrayList<OrderDto>();
-		Orders order = orderRepository.findOrderByOrderIdAndUserId(request.getOrderId(),request.getUserId());
+	
+		EmailUpdateStatusRequest email = new EmailUpdateStatusRequest();
 		
-		if(order.getStatus() == EOrderStatus.CHOXACNHAN.toString()) {
-			order.setStatus(EOrderStatus.DANGXULY.toString());
-			order.setUpdatedDate(new Date());
-		}
-		if(order.getStatus() == EOrderStatus.DANGXULY.toString()) {
-			order.setStatus(EOrderStatus.HOANTAT.toString());
-			order.setUpdatedDate(new Date());
-		}
-		if(order.getStatus() == EOrderStatus.HOANTAT.toString()) {
-			order.setStatus(EOrderStatus.DANHANHANG.toString());
-			order.setUpdatedDate(new Date());
-		}
+		Orders order = orderRepository.findOrderByOrderIdAndUserId(request.getOrderId(),request.getUserId());
+		order.setStatus(request.getStatus());
+		
+		email.setCreateAt(new Date());
+		email.setNameUser(order.getUser().getName());
+		email.setOrderId(order.getId());
+		email.setStatus(order.getStatus());
+		email.setToEmail(order.getUser().getEmail());
+		
+		emailService.sendEmailUpdateStatus(email);
+		
 		orderRepository.save(order);
+		
 		dto = getOrderByUserId(request.getUserId());
 		return dto;
 		
@@ -201,7 +222,6 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	public List<Orders> filtListStutusOrder(String status) {
-
 		List<Orders> order = orderRepository.findOrderByStatus(status);		
 		return order;
 	}

@@ -29,7 +29,7 @@ public class UserDetailsImpl implements UserDetails{
 	public static UserDetailsImpl build(Users user) {
 		GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getName().name());
 
-		return new UserDetailsImpl(user.getId(), user.getLoginName(), user.getEmail(), user.getPasswordSalt(), authorities);
+		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPasswordSalt(), authorities);
 	}
 
 	public UserDetailsImpl(Integer id, String username, String email, String password,

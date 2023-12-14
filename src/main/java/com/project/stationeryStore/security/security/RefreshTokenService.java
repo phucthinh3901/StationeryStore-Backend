@@ -38,7 +38,7 @@ public class RefreshTokenService {
 		RefreshToken refreshToken = new RefreshToken();
 		Users user = userRepository.findById(userId).get();
 		refreshToken.setUser(user);
-		refreshToken.setToken(jwtUtils.doGenerateRefreshToken(user.getLoginName()));
+		refreshToken.setToken(jwtUtils.doGenerateRefreshToken(user.getUsername()));
 		refreshToken = refreshTokenRepository.save(refreshToken);
 		return refreshToken;
 	}

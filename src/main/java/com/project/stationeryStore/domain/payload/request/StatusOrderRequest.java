@@ -8,4 +8,6 @@ public class StatusOrderRequest {
 	private Integer orderId;
 	
 	private Integer userId;
+	
+	private String status;
 }
